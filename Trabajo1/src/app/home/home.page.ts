@@ -44,6 +44,18 @@ export class HomePage {
   }
 
   olvido(){
+    if(this.usuario.nombre.length !=0){
+        let navigationExtras:NavigationExtras={
+          state:{
+            usuario:this.usuario.nombre,
+            contrasena:this.usuario.contrasena,
+          }
+        }
+        this.router.navigate(['/pagina3'], navigationExtras)
+        this.mensaje=''
+    } else {
+        this.mensaje='No ingresa usuario'
+      } 
 
   }
 }

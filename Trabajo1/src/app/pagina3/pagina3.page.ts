@@ -22,7 +22,10 @@ usuario=''
   }
 
   
-
+  terminar(){
+        this.router.navigate(['/home'])
+    }
+  
 
   ngOnInit() {
   }
