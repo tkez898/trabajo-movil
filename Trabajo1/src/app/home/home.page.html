@@ -1,0 +1,37 @@
+
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Pagina de Inicio (Menu)
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Inicio de Sesion</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div id="container">
+    <ion-label slot="start" >Usuario</ion-label>
+    <ion-input [(ngModel)]="usuario.nombre"></ion-input>
+
+  <br />
+
+  <ion-label position="Inicio" >Contraseña</ion-label>
+  <ion-input [(ngModel)]="usuario.contrasena" value=><ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+  <ion-item>
+    <ion-label>{{mensaje}}</ion-label>
+  </ion-item>
+  <ion-button (click)="ingresar()">"INGRESAR" </ion-button>
+  <ion-button (click)="olvido()">“RECUPERAR”  </ion-button>
+
+  
+  </div>
+  
+</ion-content>
