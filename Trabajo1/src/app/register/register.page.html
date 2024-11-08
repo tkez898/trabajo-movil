@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro de Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <ion-label position="floating">Usuario</ion-label>
+    <ion-input [(ngModel)]="usuario.nombre"></ion-input>
+
+    <br />
+
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input [(ngModel)]="usuario.contrasena" type="password">
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+
+    <br />
+
+    <ion-label position="floating">Confirmar Contraseña</ion-label>
+    <ion-input [(ngModel)]="usuario.confirmacion" type="password">
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+
+    <ion-item>
+      <ion-label>{{ mensaje }}</ion-label>
+    </ion-item>
+
+    <ion-button expand="full" (click)="registrar()">REGISTRAR</ion-button>
+  </div>
+</ion-content>

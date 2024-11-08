@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,12 +14,27 @@ const routes: Routes = [
   },
   {
     path: 'pagina2',
-    loadChildren: () => import('./pagina2/pagina2.module').then( m => m.Pagina2PageModule)
+    loadChildren: () => import('./pagina2/pagina2.module').then(m => m.Pagina2PageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'pagina3',
-    loadChildren: () => import('./pagina3/pagina3.module').then( m => m.Pagina3PageModule)
+    loadChildren: () => import('./pagina3/pagina3.module').then( m => m.Pagina3PageModule),
+    canActivate: [AuthGuard]
   },
+  {
+    path: 'not-found',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },
+
+  {
+    path: '**',
+    redirectTo: 'not-found'
+  }
 ];
 
 @NgModule({

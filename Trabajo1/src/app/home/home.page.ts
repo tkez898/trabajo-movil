@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
-import { Router, NavigationExtras} from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
+import { ApiControllerService } from '../api-controller.service';
 
+interface Usuario {
+  id: number;
+  username: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -8,54 +14,77 @@ import { Router, NavigationExtras} from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  public mostrar: boolean = false;
 
-  usuario={
-   'nombre':'',
-   'contrasena':''
-  }
-  mensaje='';
+  usuario = {
+    username: '',
+    password: ''
+  };
 
+  mensaje = '';
 
-  constructor(private router:Router) {}
+  constructor(private router: Router, private api: ApiControllerService) {}
+
+  ingresar() {
+    console.log('Intentando ingresar con usuario:', this.usuario.username);
   
-  ingresar(){
-    if(this.usuario.nombre.length !=0){
-      if(this.usuario.contrasena.length !=0){
-        this.mensaje='Ingresado Correctamente'
-
-        let navigationExtras:NavigationExtras={
-          state:{
-            usuario:this.usuario.nombre,
-            contrasena:this.usuario.contrasena,
+    if (this.usuario.username.length > 0) {
+      if (this.usuario.password.length > 0) {
+        this.api.obtenerUsuario().subscribe(
+          (usuarios: Usuario[]) => {
+            console.log('Usuarios recuperados:', usuarios);
+  
+            const userFound = usuarios.find(
+              (user: Usuario) =>
+                user.username === this.usuario.username &&
+                user.password === this.usuario.password
+            );
+  
+            if (userFound) {
+              console.log('Usuario encontrado:', userFound);
+              this.mensaje = 'Ingresado Correctamente';
+  
+              localStorage.setItem('isAuthenticated', 'true');
+              localStorage.setItem('usuario', this.usuario.username);
+  
+              let navigationExtras: NavigationExtras = {
+                state: { usuario: this.usuario.username }
+              };
+  
+              this.router.navigate(['/pagina2'], navigationExtras);
+            } else {
+              console.log('Usuario o contraseña incorrectos.');
+              this.mensaje = 'Usuario o contraseña incorrectos o no registrado';
+            }
+          },
+          (error) => {
+            console.log('ERROR en la llamada a la API:', error);
+            this.mensaje = 'Error al validar las credenciales';
           }
-        }
-        this.router.navigate(['/pagina2'], navigationExtras)
-        this.mensaje=''
-
-      }
-      else {
-        this.mensaje='No ingresa Contraseña'
+        );
+      } else {
+        this.mensaje = 'No se ingresó una contraseña.';
+        console.log('No se ingresó una contraseña.');
       }
     } else {
-        this.mensaje='No ingresa usuario'
-    } 
-
+      this.mensaje = 'No se ingresó un usuario.';
+      console.log('No se ingresó un usuario.');
+    }
   }
+  
 
-  olvido(){
-    if(this.usuario.nombre.length !=0){
-        let navigationExtras:NavigationExtras={
-          state:{
-            usuario:this.usuario.nombre,
-            contrasena:this.usuario.contrasena,
-          }
+
+  olvido() {
+    if (this.usuario.username.length > 0) {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          usuario: this.usuario.username,
+          contrasena: this.usuario.password,
         }
-        this.router.navigate(['/pagina3'], navigationExtras)
-        this.mensaje=''
+      };
+      this.router.navigate(['/pagina3'], navigationExtras);
+      this.mensaje = '';
     } else {
-        this.mensaje='No ingresa usuario'
-      } 
-
+      this.mensaje = 'No se ingresó un usuario';
+    }
   }
 }
